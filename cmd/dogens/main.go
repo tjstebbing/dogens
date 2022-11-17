@@ -1,18 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	dogens "github.com/tjstebbing/dogens/pkg"
 )
 
 func main() {
 
-	addr, err := dogens.DomainToAddr("dogecoin.com")
-	if err != nil {
-		log.Println(err)
-		log.Fatal("No address associated with this domain")
+	if len(os.Args) > 1 {
+		addr, err := dogens.DomainToAddr(os.Args[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Dogecoin addr for %s: %s\n", os.Args[1], addr)
+	} else {
+		log.Fatal("Please provide a domain")
 	}
-	log.Println(addr)
 
 }

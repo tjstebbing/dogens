@@ -1,8 +1,9 @@
 package dogens
 
 import (
-	"fmt"
+	"errors"
 	"net"
+	"strings"
 )
 
 func DomainToAddr(domain string) (string, error) {
@@ -10,6 +11,13 @@ func DomainToAddr(domain string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	fmt.Println(txts)
-	return "", nil
+
+	for _, record := range txts {
+		if strings.HasPrefix(record, "dogecoin:") {
+			_, addr, _ := strings.Cut(record, ":")
+			return addr, nil
+		}
+	}
+
+	return "", errors.New("No address found for this domain")
 }
